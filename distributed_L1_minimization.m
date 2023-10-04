@@ -1,4 +1,4 @@
-function x_opt = distributed_L1_minimization(H, y, L, n_states,num_agents, max_iter)
+function x_opt = distributed_L1_minimization(H, y, in_degree, L_bar, adj, n_states,num_agents, max_iter)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % N agents, measurement modes:
 %                              y_i = H_i*x + e_i
@@ -49,11 +49,13 @@ function x_opt = distributed_L1_minimization(H, y, L, n_states,num_agents, max_i
 N_states = num_agents*n_states;
 x = zeros(N_states,1);
 x_next = x;
+
 mu = rand(num_agents*n_states,1);
-rho = 0.1;
-in_degree = diag(diag(L));
-adj = kron(in_degree-L, eye(n_states));
-L_bar = kron(L, eye(n_states));
+rho = 0.05;
+
+% in_degree = diag(L);
+% adj = kron(diag(diag(L))-L, eye(n_states));
+% L_bar = kron(L, eye(n_states));
 
 for iter = 1:max_iter
     for i_agent = 1:num_agents
@@ -66,6 +68,12 @@ for iter = 1:max_iter
     mu = mu + rho*L_bar*x;
 
     x = x_next;
+%     if ( norm(x(1:n_states) - x(n_states+1:2*n_states)) < 0.001 ) ...
+%                 && ( norm(x(1:n_states) - x(2*n_states+1:3*n_states)) < 0.001 )
+%         disp('eary converge at iter');
+%         disp(num2str(iter));
+%         break;
+%     end
 end
 
 x_opt = x;

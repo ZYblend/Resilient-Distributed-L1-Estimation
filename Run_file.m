@@ -43,7 +43,7 @@ t_cent = zeros(num_agents*n_meas,1);
 R_dist = cell(1,num_agents);
 for cam=1:num_agents
     R_cent((cam-1)*n_meas+1:cam*n_meas,:) = extrinsics{cam}.R;
-    R_dist{1,cam} = extrinsics{cam}.R;
+    R_dist{cam} = extrinsics{cam}.R;
     t_cent((cam-1)*n_meas+1:cam*n_meas,:) = extrinsics{cam}.Translation';
 end
 
@@ -63,6 +63,10 @@ L = [1  -1  0  0;
     -1   2  0  -1;
      0   0  1  -1;
      0  -1 -1  2];
+in_degree = diag(L);
+adj = kron(diag(diag(L))-L, eye(n_states));
+L_bar = kron(L, eye(n_states));
+
 disp('Has Spanning Tree?')
 disp(num2str(eig(L)));
 

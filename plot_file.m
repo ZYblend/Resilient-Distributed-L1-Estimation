@@ -2,7 +2,7 @@
 
 map = binaryOccupancyMap(simpleMap);
 robotPose = out.BicyclePose;
-estimatedPose = out.estimated_pose;
+estimatedPose = out.estimated_pose1;
 estimatedPose = permute(estimatedPose,[1 3 2]);
 estimatedPose = reshape(estimatedPose,[],size(estimatedPose,2),1);
 estimatedPose = estimatedPose.';
