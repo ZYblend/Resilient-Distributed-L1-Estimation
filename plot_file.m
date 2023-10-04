@@ -32,10 +32,10 @@ for k = 1:size(xyz, 1)
     text(goalLoc(1), goalLoc(2), 2, 'Goal');
     
     % Plot Robot's XY locations
-    plot(robotPose(:, 1), robotPose(:, 2), '-b')
+    plot(robotPose(:, 1), robotPose(:, 2), '*b')
 
     % Plot stimated Robot's XY locations
-    plot(estimatedPose(:, 1), estimatedPose(:, 2), '--r')
+    plot(estimatedPose(:, 1), estimatedPose(:, 2), 'or')
     
     % Plot Robot's pose as it traverses the path
     quat = eul2quat(thetaEuler(k, :), 'xyz');

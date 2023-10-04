@@ -1,4 +1,4 @@
-function x_opt = distributed_L1_minimization(H, y, in_degree, L_bar, adj, n_states,num_agents, max_iter)
+function x_opt = distributed_L1_minimization(H, y, in_degree, L_bar, adj, n_states,num_agents, max_iter,x0)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % N agents, measurement modes:
 %                              y_i = H_i*x + e_i
@@ -46,12 +46,13 @@ function x_opt = distributed_L1_minimization(H, y, in_degree, L_bar, adj, n_stat
 %    
 
 %% Vecterization
-N_states = num_agents*n_states;
-x = zeros(N_states,1);
+% N_states = num_agents*n_states;
+% x = zeros(N_states,1);
+x = x0;
 x_next = x;
 
 mu = rand(num_agents*n_states,1);
-rho = 0.05;
+rho = 0.1;
 
 % in_degree = diag(L);
 % adj = kron(diag(diag(L))-L, eye(n_states));
@@ -62,18 +63,19 @@ for iter = 1:max_iter
 %         Xi = (L_bar((i_agent-1)*n_states+1:i_agent*n_states ,:).').*x;   % set the non-communicated agent's row to be zeros
 %         fun = @(z) norm(y{i_agent}-H{i_agent}*z,1) + z.'*L_bar((i_agent-1)*n_states+1:i_agent*n_states ,:)*mu + rho*calc_regularization_term(i_agent,Xi,z);
         fun = @(z) norm(y{i_agent}-H{i_agent}*z,1) + z.'*L_bar((i_agent-1)*n_states+1:i_agent*n_states ,:)*mu + ...
-                   (rho/2)*norm(in_degree(i_agent)*z-adj((i_agent-1)*n_states+1:i_agent*n_states ,:)*x,2)^2;
-        x_next((i_agent-1)*n_states+1:i_agent*n_states) = fmincon(fun,x((i_agent-1)*n_states+1:i_agent*n_states),[],[]);
+                   (rho)*norm(in_degree(i_agent)*z-adj((i_agent-1)*n_states+1:i_agent*n_states ,:)*x,2)^2;
+%         x_next((i_agent-1)*n_states+1:i_agent*n_states) = fmincon(fun,x((i_agent-1)*n_states+1:i_agent*n_states),[],[]);
+        x_next((i_agent-1)*n_states+1:i_agent*n_states) = fmincon(fun,zeros(n_states,1),[],[]);
     end
-    mu = mu + rho*L_bar*x;
+    mu = mu + rho*L_bar*x_next;
 
     x = x_next;
-%     if ( norm(x(1:n_states) - x(n_states+1:2*n_states)) < 0.001 ) ...
-%                 && ( norm(x(1:n_states) - x(2*n_states+1:3*n_states)) < 0.001 )
+    if ( norm(x(1:n_states) - x(n_states+1:2*n_states)) < 0.001 ) ...
+                && ( norm(x(1:n_states) - x(2*n_states+1:3*n_states)) < 0.001 )
 %         disp('eary converge at iter');
 %         disp(num2str(iter));
-%         break;
-%     end
+        break;
+    end
 end
 
 x_opt = x;

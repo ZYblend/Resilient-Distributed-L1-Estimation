@@ -2,19 +2,23 @@
 clear all
 clc
 
+% location
+dir = pwd;
+
 %% Vehicle system Dynamics and controller
 n_states = 3;  %[x,y,theta]
-WheelBase=0.256;
+WheelBase=0.256; 
 
-z0 = [-1; -2; 0];  % initial state
+% motion parameters
 constraint_steering =  pi/6;
 constraint_velocity = [-0.5, 0.5];
 
-load exampleMaps.mat;
+% load map
+load(dir+"/data/exampleMaps.mat");
 startLoc = [5 5];
 goalLoc = [12 3];
 
-C = eye(2,n_states);
+C = eye(2,n_states); 
 
 
 %% Camera system parameters
@@ -23,17 +27,16 @@ n_meas = 3;
 
 % camera model parameters (calibrated)
 plane = 2.282825;   % height camera
-dir = pwd;
 % camParams = load(dir+"\nCamsParams.mat", "camParams");
 % camParams = camParams.camParams;
-extrinsics = load(dir+"\nCamsExtrinsics.mat", "camExtrinsics");
+extrinsics = load(dir+"\data\nCamsExtrinsics.mat", "camExtrinsics");
 extrinsics = extrinsics.camExtrinsics; % R|t
 % poses = load(dir+"\nCamsPoses.mat", "camPoses");
 % poses = poses.camPoses;
 
 % attack
 num_attack = 2;
-sparse_loc = [1,3];
+sparse_loc = [1,2];
 e = zeros(n_meas*num_agents,1);
 e(sparse_loc) = 2*rand(num_attack,1);
 
@@ -67,7 +70,7 @@ in_degree = diag(L);
 adj = kron(diag(diag(L))-L, eye(n_states));
 L_bar = kron(L, eye(n_states));
 
-disp('Has Spanning Tree?')
+disp('Connected Graph?')
 disp(num2str(eig(L)));
 
 % solver
