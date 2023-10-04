@@ -12,14 +12,20 @@ WheelBase=0.256;
 % motion parameters
 constraint_steering =  pi/6;
 constraint_velocity = [-0.5, 0.5];
+vd = 0.1;
 
 % load map
 load(dir+"/data/exampleMaps.mat");
 startLoc = [5 5];
 goalLoc = [12 3];
 
-C = eye(2,n_states); 
-
+C = eye(2,n_states);
+C_block = blkdiag(C,C,C,C);
+A = @(v,theta) [0 0 -v*sin(theta);
+                0 0  v*cos(theta);
+                0 0 0];
+disp('fully observable?')
+disp( num2str(rank(obsv(A(0.1,pi/6),C))) );
 
 %% Camera system parameters
 num_agents = 4;
@@ -73,5 +79,11 @@ L_bar = kron(L, eye(n_states));
 disp('Connected Graph?')
 disp(num2str(eig(L)));
 
-% solver
+% distributed L1 solver
 max_iter = 500;
+
+% dynamical observer
+A_obsv = kron(eye(num_agents),A(0.1,pi/6));
+poles = [-1.5 -2.5 -2];
+L_obsv = place(A(0.1,pi/6).',C.',poles).';
+L_obsv_blk = kron(eye(num_agents),L_obsv);
