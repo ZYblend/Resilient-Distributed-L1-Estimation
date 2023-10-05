@@ -87,3 +87,8 @@ A_obsv = kron(eye(num_agents),A(0.1,pi/6));
 poles = [-1.5 -2.5 -2];
 L_obsv = place(A(0.1,pi/6).',C.',poles).';
 L_obsv_blk = kron(eye(num_agents),L_obsv);
+
+z0 = [1;0;0;
+      1;2;0;
+      1;4;0;
+      1;6;0];  % initialization of estiamte for each camera

@@ -58,35 +58,39 @@ thetaEuler(:, end) = theta;
 figure
 show(map)
 hold on;
-plot(robotPose(:, 1), robotPose(:, 2), '-b');
+plot(robotPose(:, 1), robotPose(:, 2), '-k','LineWidth',3);
 hold on, plot(estimatedPose2(:, 1), estimatedPose2(:, 2), '--r');
-legend('robot path','attacked camera 1 estiamted')
+hold on, plot(estimatedPose2(:, 4), estimatedPose2(:, 5),'--b');
+hold on, plot(estimatedPose2(:, 7), estimatedPose2(:, 8),'--g');
+hold on, plot(estimatedPose2(:, 10), estimatedPose2(:, 11),'--c');
+legend('robot path','camera1','camera 2', 'camera 3', 'camera 4')
 title('Path Localization')
 
 figure
 subplot(3,1,1)
-plot(robotPose(:,1),'ok');
+plot(robotPose(:,1),'-k','LineWidth',2);
 hold on, plot(estimatedPose2(:,1),'-r');
 hold on, plot(estimatedPose2(:,4),'-b');
 hold on, plot(estimatedPose2(:,7),'-g');
 hold on, plot(estimatedPose2(:,10),'-c');
 legend('robot state','camera 1', 'camera 2', 'camera 3', 'camera 4')
-title('x')
+ylabel('x')
 
 subplot(3,1,2)
-plot(robotPose(:,2),'ok');
+plot(robotPose(:,2),'-k','LineWidth',2);
 hold on, plot(estimatedPose2(:,2),'-r');
 hold on, plot(estimatedPose2(:,5),'-b');
 hold on, plot(estimatedPose2(:,8),'-g');
 hold on, plot(estimatedPose2(:,11),'-c');
 legend('robot state','camera 1', 'camera 2', 'camera 3', 'camera 4')
-title('y')
+ylabel('y')
 
 subplot(3,1,3)
-plot(robotPose(:,3),'ok');
+plot(robotPose(:,3),'-k','LineWidth',2);
 hold on, plot(estimatedPose2(:,3),'-r');
 hold on, plot(estimatedPose2(:,6),'-b');
 hold on, plot(estimatedPose2(:,9),'-g');
 hold on, plot(estimatedPose2(:,12),'-c');
 legend('robot state','camera 1', 'camera 2', 'camera 3', 'camera 4')
-title('\theta')
+ylabel('\theta')
+xlabel('Time')
