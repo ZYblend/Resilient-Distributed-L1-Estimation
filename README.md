@@ -1,4 +1,6 @@
 # Resilient Multi-Camera Perception
+![camerasInWorld](https://github.com/ZYblend/Resilient-Distributed-L1-Estimation/assets/36635562/c31637ce-52d2-4467-9cd1-3d62182ec658)
+
 
 ## How to run
 - run "Run_file.m"
@@ -10,6 +12,8 @@
 - distributed_L1_minimization.m
 
 Read the comments in the functions for the deduction and example of use. If have any questions, please contact Yu Zheng at yzheng6@fsu.edu.
+![observer_scheme](https://github.com/ZYblend/Resilient-Distributed-L1-Estimation/assets/36635562/745564bb-6b8c-4395-b3d1-a215d7fc8656)
+
 
 ## Cite me
 If you find the functions are useful for your research, please cite us:
