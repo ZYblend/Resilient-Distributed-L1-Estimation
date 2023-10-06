@@ -94,3 +94,11 @@ hold on, plot(estimatedPose2(:,12),'-c');
 legend('robot state','camera 1', 'camera 2', 'camera 3', 'camera 4')
 ylabel('\theta')
 xlabel('Time')
+
+%% calculate errors
+% root mean square error
+E1 = sqrt((1/3)*norm((1/size(robotPose,1))*vecnorm(estimatedPose(:,1:3)-robotPose,1))^2);
+E2 = sqrt((1/3)*norm((1/size(robotPose,1))*vecnorm(estimatedPose(:,4:6)-robotPose,1))^2);
+E3 = sqrt((1/3)*norm((1/size(robotPose,1))*vecnorm(estimatedPose(:,7:9)-robotPose,1))^2);
+E4 = sqrt((1/3)*norm((1/size(robotPose,1))*vecnorm(estimatedPose(:,10:12)-robotPose,1))^2);
+RMS_error = (E1+E2+E3+E4)/4

@@ -39,6 +39,7 @@ extrinsics = load(dir+"\data\nCamsExtrinsics.mat", "camExtrinsics");
 extrinsics = extrinsics.camExtrinsics; % R|t
 % poses = load(dir+"\nCamsPoses.mat", "camPoses");
 % poses = poses.camPoses;
+R1 = extrinsics{1}.R;
 
 % attack
 num_attack = 2;
